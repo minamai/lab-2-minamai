@@ -108,11 +108,9 @@ INTEGER CODING RULES:
  */
 int intSize() {
   int intArray[10];
-  int *intPtr1;
-  int *intPtr2;
-  // Write code to compute size of an integer.
-
-  return 2;
+  int *intPtr1 = intArray;
+  int *intPtr2 = intArray+1;
+  return intPtr2 - intPtr1;
 }
 
 /*
@@ -131,11 +129,9 @@ int intSize() {
  */
 int doubleSize() {
   double doubArray[10];
-  double *doubPtr1;
-  double *doubPtr2;
-  // Write code to compute size of a double.
-
-  return 2;
+  double *doublePtr1 = doubleArray;
+  double *doublePtr2 = doubleArray+1;
+  return doublePtr2 - doublePtr1;
 }
 
 /*
@@ -154,11 +150,9 @@ int doubleSize() {
  */
 int pointerSize() {
   double *ptrArray[10];
-  double **ptrPtr1;
-  double **ptrPtr2;
-  // Write code to compute size of a pointer.
-
-  return 2;
+  int **ptrPtr1 = ptrArray;
+  int **ptrPtr2 = ptrArray+1;
+  return ptrPtr2 - ptrPtr1;
 }
 
 /*
@@ -177,7 +171,9 @@ int pointerSize() {
  *   Unary integer operators: ~, -
  */
 void swapInts(int *ptr1, int *ptr2) {
-  // Your code here
+  int temp = *ptr1;
+  *ptr1 = *ptr2;
+  *ptr2 = temp;
 }
 
 /*
@@ -197,10 +193,8 @@ void swapInts(int *ptr1, int *ptr2) {
  */
 int changeValue() {
   int intArray[10];
-  int *intPtr1 = intArray;
-  // Remember not to use constants greater than 255.
-  // Remember to use * to dereference. You cannot use '[<index>]' syntax.
-
+  int *intPtr1 = intArray + 5;
+  *intPtr1 = 250 + 101;
   return intArray[5];
 }
 
@@ -223,7 +217,7 @@ int changeValue() {
  */
 int withinSameBlock(int *ptr1, int *ptr2) {
   // Your code here
-  return 2;
+  return (ptr1 >> 6) == (ptr2 >> 6);
 }
 
 /*
@@ -246,8 +240,10 @@ int withinSameBlock(int *ptr1, int *ptr2) {
  *   Unary integer operators: -
  */
 int withinArray(int *intArray, int size, int *ptr) {
-  // Your code here
-  return 2;
+  long ptrAddress = (long) ptr;
+  long arrayAddress = (long) intArray;
+  long arrayEndAddress = (long) (intArray + size);
+  return !((ptrAddress - arrayAddress) * (arrayEndAddress - ptrAddress)) == 0 ;
 }
 
 /*
@@ -268,8 +264,13 @@ int withinArray(int *intArray, int size, int *ptr) {
  *   Unary integer operators: ~, -
  */
 int stringLength(char *s) {
-  // Your code here
-  return 2;
+  char* temp = s;
+  int len = 0;
+  while(*temp != '\0'){
+    temp++;
+    len++;
+  }
+  return len;
 }
 
 /*
@@ -296,8 +297,15 @@ int stringLength(char *s) {
  *   Unary integer operators: ~, -
  */
 int endianExperiment(int *ptr) {
-  char *bytePtr;
-  // Your code here
+  // 295295 = 0x0004817f
+  char *bytePtr = (char*) ptr;
+  *bytePtr = 0x7f;
+  bytePtr++;
+  *bytePtr = 0x81;
+  bytePtr++;
+  *bytePtr = 0x04;
+  bytePtr++;
+  *bytePtr = 0x00;
   return *ptr;
 }
 
@@ -359,9 +367,12 @@ int smallest_idx(int *arr, int len) {
   int i;
   int smallest_i = 0;
   int smallest = arr[0];
-
-  // TODO: implement me using a for loop.
-
+  for( i = 1; i < len; i++ ){
+    if( *(arr + i) < smallest ){
+      smallest_i = i;
+      smallest = *(arr + i);
+    }
+  }
   return smallest_i;
 }
 
