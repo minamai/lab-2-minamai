@@ -366,7 +366,7 @@ of bounds!
 int smallest_idx(int *arr, int len) {
   int i;
   int smallest_i = 0;
-  int smallest = arr[0];
+  int smallest = *arr;
   for( i = 1; i < len; i++ ){
     if( *(arr + i) < smallest ){
       smallest_i = i;
